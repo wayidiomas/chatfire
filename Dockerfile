@@ -14,6 +14,12 @@ WORKDIR /src
 COPY package.json .
 COPY yarn.lock .
 RUN yarn set version 3.6.3
+
+# Autenticar-se no Docker Hub
+ARG DOCKERHUB_USERNAME
+ARG DOCKERHUB_PASSWORD
+RUN echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+
 RUN --mount=type=ssh yarn install
 
 # App
@@ -21,6 +27,9 @@ WORKDIR /src
 ADD . /src
 RUN --mount=type=ssh yarn install
 RUN yarn build && find ./dist -name "*.d.ts" -delete
+
+# Logout do Docker Hub
+RUN docker logout
 
 #
 # Final
