@@ -3,7 +3,7 @@ services:
   whatsapp-http-api:
     build:
       context: .
-      dockerfile: ./Dockerfile  # Certifique-se de que o caminho está correto
+      dockerfile: ./Dockerfile
     container_name: whatsapp-http-api
     ports:
       - '3000:3000/tcp'
@@ -17,7 +17,7 @@ services:
     image: devlikeapro/whatsapp-http-api-plus:chrome
     container_name: whatsapp-http-api-plus
     ports:
-      - '3001:3000/tcp'  # Alterei a porta exposta para evitar conflito com outro serviço na mesma porta
+      - '3001:3000/tcp'
     volumes:
       - './.sessions:/app/.sessions'
     environment:
