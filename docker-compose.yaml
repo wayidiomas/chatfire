@@ -1,68 +1,42 @@
 version: '3'
 services:
   whatsapp-http-api:
-    # Check available Docker images:
-    # https://waha.devlike.pro/docs/how-to/engines/#docker-images
-    image: devlikeapro/whatsapp-http-api
+    build:
+      context: .
+      dockerfile: ./Dockerfile  # Certifique-se de que o caminho está correto se o Dockerfile estiver no mesmo diretório que o docker-compose.yml
     container_name: whatsapp-http-api
     ports:
       - '3000:3000/tcp'
     environment:
-      # Environment variables from https://waha.devlike.pro/docs/how-to/config/
       - WHATSAPP_HOOK_URL=https://httpbin.org/post
       - WHATSAPP_HOOK_EVENTS=message
       - WHATSAPP_DEFAULT_ENGINE=WEBJS
     restart: always
 
   whatsapp-http-api-plus:
-    # Check available Docker images:
-    # https://waha.devlike.pro/docs/how-to/engines/#docker-images
     image: devlikeapro/whatsapp-http-api-plus:chrome
     container_name: whatsapp-http-api-plus
     ports:
-      - '3000:3000/tcp'
+      - '3001:3000/tcp'  # Alterei a porta exposta para evitar conflito com outro serviço na mesma porta
     volumes:
       - './.sessions:/app/.sessions'
     environment:
-      # Environment variables from https://waha.devlike.pro/docs/how-to/config/
-      # - WHATSAPP_RESTART_ALL_SESSIONS=True
-      # - WHATSAPP_HOOK_URL=https://httpbin.org/post
-      # - WHATSAPP_HOOK_EVENTS=message
-      # - WHATSAPP_API_HOSTNAME=localhost
       - WHATSAPP_DEFAULT_ENGINE=WEBJS
       - WHATSAPP_API_KEY=321
-      # Username and password for Swagger
       - WHATSAPP_SWAGGER_USERNAME=swagger
       - WHATSAPP_SWAGGER_PASSWORD=admin
-      # Username and password for WAHA Dashboard
-      # you can use the same username and password for both Swagger and Dashboard
-      # Default - waha / waha
       - WAHA_DASHBOARD_USERNAME=waha
       - WAHA_DASHBOARD_PASSWORD=waha
-      # Engine specific environment variables
-      # - WAHA_WEBJS_WEB_VERSION=2.2412.54-videofix
     restart: always
 
   whatsapp-http-api-plus--mongodb:
-    # Check available Docker images:
-    # https://waha.devlike.pro/docs/how-to/engines/#docker-images
     image: devlikeapro/whatsapp-http-api-plus:chrome
     container_name: whatsapp-http-api-plus--mongodb
     ports:
-      - '3000:3000/tcp'
+      - '3002:3000/tcp'  # Alterei a porta exposta para evitar conflito com outro serviço na mesma porta
     volumes:
       - './.sessions:/app/.sessions'
     environment:
-      # Environment variables from https://waha.devlike.pro/docs/how-to/config/
-      # - WHATSAPP_RESTART_ALL_SESSIONS=True
-      # - WHATSAPP_HOOK_URL=https://httpbin.org/post
-      # - WHATSAPP_HOOK_EVENTS=message
-      # - WHATSAPP_API_KEY=321
-      # - WHATSAPP_SWAGGER_USERNAME=admin
-      # - WHATSAPP_SWAGGER_PASSWORD=123
-      # - WAHA_DASHBOARD_USERNAME=admin
-      # - WAHA_DASHBOARD_PASSWORD=123
-      # - WHATSAPP_API_HOSTNAME=localhost
       - WHATSAPP_DEFAULT_ENGINE=WEBJS
       - WHATSAPP_SESSIONS_MONGO_URL=mongodb://mongodb:27017
     restart: always
