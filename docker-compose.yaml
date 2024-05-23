@@ -3,7 +3,7 @@ services:
   whatsapp-http-api:
     build:
       context: .
-      dockerfile: ./Dockerfile  # Certifique-se de que o caminho está correto se o Dockerfile estiver no mesmo diretório que o docker-compose.yml
+      dockerfile: ./Dockerfile  # Certifique-se de que o caminho está correto
     container_name: whatsapp-http-api
     ports:
       - '3000:3000/tcp'
@@ -33,7 +33,7 @@ services:
     image: devlikeapro/whatsapp-http-api-plus:chrome
     container_name: whatsapp-http-api-plus--mongodb
     ports:
-      - '3002:3000/tcp'  # Alterei a porta exposta para evitar conflito com outro serviço na mesma porta
+      - '3002:3000/tcp'
     volumes:
       - './.sessions:/app/.sessions'
     environment:
