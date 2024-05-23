@@ -16,11 +16,6 @@ COPY package.json .
 COPY yarn.lock .
 RUN yarn set version 3.6.3
 
-# Autenticar-se no Docker Hub e puxar a imagem necessária
-RUN docker login -u devlikeapro -p dckr_pat_xP-xMgsL2B_3ASMlfLAuRJ0pRus \
-    && docker pull devlikeapro/whatsapp-http-api-plus \
-    && docker logout
-
 RUN --mount=type=ssh yarn install
 
 # App
@@ -72,6 +67,9 @@ COPY package.json ./
 COPY --from=build /src/node_modules ./node_modules
 COPY --from=build /src/dist ./dist
 
-# Run command, etc
-EXPOSE 3000
-CMD yarn start:prod
+# Copiar o script de inicialização
+COPY start.sh /app/start.sh
+RUN chmod +x /app/start.sh
+
+# Executar o script de inicialização
+CMD ["/app/start.sh"]
